@@ -52,6 +52,13 @@ class ProfileService {
     }).select("email picture name");
     return profiles;
   }
+  async getSiteId(email) {
+    let profile = await dbContext.Profile.findOne({ email: email }).select(
+      "siteId"
+    );
+    // @ts-ignore
+    return profile.siteId;
+  }
 
   /**
    * Returns a user profile from the Auth0 user object
