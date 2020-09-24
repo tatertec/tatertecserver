@@ -11,7 +11,7 @@ export default class Startup {
     // NOTE Configure and Register Middleware
     let whitelist = [
       "http://localhost:8080",
-      "https://concretedigitalserver.herokuapp.com",
+      "https://concretedigital.netlify.app",
     ];
     let corsOptions = {
       origin: function (origin, callback) {
