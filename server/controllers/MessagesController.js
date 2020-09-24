@@ -58,12 +58,18 @@ export class MessagesController extends BaseController {
   //   }
   // }
   async delete(req, res, next) {
-    const siteId = profilesService.getSiteId();
-    try {
-      let data = await messageService.delete(req.params.id);
-      res.send(data);
-    } catch (error) {
-      next(error);
+    const email = req.userInfo.email;
+    const siteId = await profilesService.getSiteId(email);
+    let message = await messageService.findById(req.params.id);
+    console.log(siteId === message.siteId);
+
+    if (siteId === message.siteId) {
+      try {
+        let data = await messageService.delete(req.params.id);
+        res.send(data);
+      } catch (error) {
+        next(error);
+      }
     }
   }
 }

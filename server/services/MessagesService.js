@@ -16,14 +16,14 @@ class MessageService {
     }
     return data;
   }
-  //NOTE Find by ID service--- commented out incase there needed
-  // findById(id) {
-  //   let data = dbContext.Message.find({ _id: id });
-  //   if (!data) {
-  //     throw new BadRequest("Invalid id");
-  //   }
-  //   return data;
-  // }
+
+  findById(id) {
+    let data = dbContext.Message.findById({ _id: id }).select("siteId");
+    if (!data) {
+      throw new BadRequest("Invalid id");
+    }
+    return data;
+  }
 
   //NOTE  Edit service--- commented out incase there needed
   // edit(id, data) {
@@ -38,7 +38,7 @@ class MessageService {
     if (!data) {
       throw new BadRequest("Invalid Id so we didn't know what to do");
     }
-    return "successfully deleted message.";
+    return data;
   }
 }
 
