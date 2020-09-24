@@ -38,7 +38,7 @@ class MessageService {
     if (!data) {
       throw new BadRequest("Invalid Id so we didn't know what to do");
     }
-    return "successfully deleted message";
+    return "successfully deleted message.";
   }
 }
 
