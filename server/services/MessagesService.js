@@ -36,7 +36,7 @@ class MessageService {
   delete(id) {
     let data = dbContext.Message.findByIdAndDelete({ _id: id });
     if (!data) {
-      throw new BadRequest("Invalid Id");
+      throw new BadRequest("Invalid Id so we didn't know what to do");
     }
     return "successfully deleted message";
   }
