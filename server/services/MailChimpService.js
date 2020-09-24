@@ -9,6 +9,7 @@ class MailChimpService {
   async ping() {
     const response = await mailchimp.ping.get();
     console.log(response);
+    return response;
   }
 }
 

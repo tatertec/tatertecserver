@@ -18,7 +18,7 @@ export class MessagesController extends BaseController {
 
   async ping(req, res, next) {
     try {
-      let data = await mailChimpService.ping(req.body);
+      let data = await mailChimpService.ping();
       res.send(data);
     } catch (error) {
       next(error);
