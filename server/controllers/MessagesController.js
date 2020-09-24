@@ -61,8 +61,10 @@ export class MessagesController extends BaseController {
     const email = req.userInfo.email;
     const siteId = await profilesService.getSiteId(email);
     let message = await messageService.findById(req.params.id);
+    // @ts-ignore
     console.log(siteId === message.siteId);
 
+    // @ts-ignore
     if (siteId === message.siteId) {
       try {
         let data = await messageService.delete(req.params.id);
