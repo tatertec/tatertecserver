@@ -11,7 +11,8 @@ export default class Startup {
     // NOTE Configure and Register Middleware
     let whitelist = [
       "http://localhost:8080",
-      "https://concretedigital.netlify.app",
+      "http://localhost:8081",
+      "https://www.tatertec.com",
     ];
     let corsOptions = {
       origin: function (origin, callback) {
