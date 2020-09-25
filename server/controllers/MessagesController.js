@@ -1,7 +1,9 @@
 import BaseController from "../utils/BaseController";
+// @ts-ignore
 import auth0Provider from "@bcwdev/auth0provider";
 import { messageService } from "../services/MessagesService";
 import { profilesService } from "../services/ProfilesService";
+import { twilioService } from "../services/TwilioService";
 export class MessagesController extends BaseController {
   constructor() {
     super("api/messages");
@@ -9,18 +11,25 @@ export class MessagesController extends BaseController {
       .post("", this.create)
       .use(auth0Provider.getAuthorizedUserInfo)
       .get("", this.find)
-      //NOTE i left the getbyid and edit routes commented out incase there needed
       // .get("/:id", this.findById)
       // .put("/:id", this.edit)
       .delete("/:id", this.delete);
   }
 
   async create(req, res, next) {
-    // var host = req.headers.host;
-    var origin = req.headers.origin;
+    const origin = req.headers.origin;
     req.body.siteId = origin;
     try {
       let data = await messageService.create(req.body);
+
+      const profiles = await profilesService.getProfileBySiteId(origin);
+      profiles.forEach((person) => {
+        // @ts-ignore
+        if (person.phoneNumber) {
+          // @ts-ignore
+          twilioService.sendNotification(person.phoneNumber);
+        }
+      });
 
       res.send(data);
     } catch (error) {

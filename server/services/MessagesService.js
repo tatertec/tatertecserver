@@ -24,15 +24,6 @@ class MessageService {
     }
     return data;
   }
-
-  //NOTE  Edit service--- commented out incase there needed
-  // edit(id, data) {
-  //   let result = dbContext.Message.findOneAndUpdate({ _id: id }, data);
-  //   if (!result) {
-  //     throw new BadRequest("Invalid id");
-  //   }
-  //   return result;
-  // }
   delete(id) {
     let data = dbContext.Message.findByIdAndDelete({ _id: id });
     if (!data) {

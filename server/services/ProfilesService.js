@@ -90,5 +90,12 @@ class ProfileService {
     );
     return profile;
   }
+  async getProfileBySiteId(siteId) {
+    let profiles = await dbContext.Profile.find({
+      siteId: { $in: siteId },
+    }).select("phoneNumber");
+    return profiles;
+  }
 }
+
 export const profilesService = new ProfileService();
