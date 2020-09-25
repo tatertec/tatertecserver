@@ -16,11 +16,12 @@ class TwilioService {
     client.messages
       .create({
         body:
-          "New message from" + //16
+          //NOTE body should not be more than 75 characters
+          "New message from " + //17
           senderName + // 16 max...
-          "Phone" + //5
+          " Phone " + //7
           senderPhoneNumber + //11
-          "https://tatertec.com", //20
+          " https://tatertec.com", //20
         from: process.env.TWILIO_PHONE_NUMBER,
         to: user.phoneNumber,
       })
