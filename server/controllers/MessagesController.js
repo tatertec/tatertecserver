@@ -11,31 +11,37 @@ export class MessagesController extends BaseController {
       .post("", this.create)
       .use(auth0Provider.getAuthorizedUserInfo)
       .get("", this.find)
-      // .get("/:id", this.findById)
-      // .put("/:id", this.edit)
       .delete("/:id", this.delete);
   }
 
   async create(req, res, next) {
+    //get the siteId and append it to the body
     const origin = req.headers.origin;
     req.body.siteId = origin;
     try {
+      //create the message in the database with siteId being where it came from
       let data = await messageService.create(req.body);
 
+      //get profiles that match siteId this is entered manually by a tatertec admin
+      //select is used to select name and phone add more to select for more data
       const profiles = await profilesService.getProfileBySiteId(origin);
-      profiles.forEach((person) => {
-        // @ts-ignore
-        if (person.phoneNumber) {
-          // @ts-ignore
-          twilioService.sendNotification(person.phoneNumber);
-        }
-      });
+      //pass the profiles to notificationService
+      twilioService.sendNotification(profiles, req.body);
 
       res.send(data);
     } catch (error) {
       next(error);
     }
   }
+
+  // Note old func delete me...
+  // profiles.forEach((person) => {
+  //   // @ts-ignore
+  //   if (person.phoneNumber) {
+  //     // @ts-ignore
+  //     twilioService.sendNotification(person.phoneNumber);
+  //   }
+
   async find(req, res, next) {
     const email = req.userInfo.email;
     const siteId = await profilesService.getSiteId(email);
@@ -46,26 +52,6 @@ export class MessagesController extends BaseController {
       next(error);
     }
   }
-  //NOTE Find by ID route--- commented out incase there needed
-  // async findById(req, res, next) {
-  //   const siteId = profilesService.getSiteId();
-  //   try {
-  //     let data = await messageService.findById(req.params.id);
-  //     res.send(data);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
-  //NOTE  Edit route--- commented out incase there needed
-  // async edit(req, res, next) {
-  //   const siteId = profilesService.getSiteId();
-  //   try {
-  //     let data = await messageService.edit(req.params.id, req.body);
-  //     res.send(data);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
   async delete(req, res, next) {
     const email = req.userInfo.email;
     const siteId = await profilesService.getSiteId(email);

@@ -93,7 +93,7 @@ class ProfileService {
   async getProfileBySiteId(siteId) {
     let profiles = await dbContext.Profile.find({
       siteId: { $in: siteId },
-    }).select("phoneNumber");
+    }).select("phoneNumber name");
     return profiles;
   }
 }
